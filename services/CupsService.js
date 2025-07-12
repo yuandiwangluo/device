@@ -34,10 +34,10 @@ class CupsService {
       const printerRegex = new RegExp(`printer\\s+${this.printerName}\\s+is\\s+\\w+`);
       if (printerRegex.test(stdout)) {
         this.connected = true;
-        console.log('✅ 打印机 EPSON_L8050 已成功添加并启用');
+        console.log(`✅ 打印机 ${this.printerName} 已成功添加并启用`);
         return this;
       } else {
-        console.warn('❌ 打印机 EPSON_L8050 未找到，请检查添加流程');
+        console.warn(`❌ 打印机 ${this.printerName} 未找到，请检查添加流程`);
         throw new Error('打印机添加失败')
       }
     } catch (error) {
@@ -193,6 +193,22 @@ class CupsService {
       throw error;
     }
   }
+
+  /**
+   * @name 设置打印机配置设置选项
+   * @returns {Promise<void>}
+   */
+  async setPrinterConfig(config) {
+    const { PageSize } = config;
+    const command = `lpoptions -p ${this.printerName} -o PageSize=${PageSize}`;
+    try {
+      await execAsync(command);
+      console.log('✅ 打印机配置设置成功');
+    } catch (error) {
+      console.error('❌ 打印机配置设置失败:', error);
+      throw error;
+    }
+   }
 
   /**
    * @name 断开CUPS服务单元连接

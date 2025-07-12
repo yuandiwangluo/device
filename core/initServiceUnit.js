@@ -111,9 +111,15 @@ const initServiceUnit = async () => {
       });
     });
 
+    // * 取消打印机所有任务
     mqttService.onMessage("cancelPrint", async (topic, message) => {
       await cupsService.cancelAllJobs();
     });
+
+    // * 打印机配置设置
+    mqttService.onMessage("setPrinterConfig", async (topic, message) => {
+      await cupsService.setPrinterConfig(message);
+     });
   } catch (error) {
     console.error('服务初始化失败:', error);
     process.exit(1);
