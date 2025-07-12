@@ -1,0 +1,19 @@
+[Unit]
+Description=Koa Print Service
+After=network.target
+
+[Service]
+Type=forking
+User=root
+Group=root
+WorkingDirectory=/usr/local/src/management-share-server
+ExecStartPre=/bin/sleep 10
+ExecStart=/usr/local/bin/start_microservice.sh
+Restart=on-failure
+RestartSec=5
+SuccessExitStatus=0 143
+StartLimitInterval=0
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+[Install]
+WantedBy=multi-user.target
